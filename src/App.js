@@ -7,6 +7,7 @@ import Home from './routes/Home';
 import AddProduct from './routes/AddProduct';
 import CustomerPurchases from './routes/CustomerPurchases';
 import EditProduct from './routes/EditProduct';
+import CreatePurchase from './routes/CreatePurchase';
 
 const App = () => {
   const router = createBrowserRouter(
@@ -16,6 +17,7 @@ const App = () => {
         <Route path='add-product' element={<AddProduct />} />
         <Route path='edit-product/:id' element={<EditProduct />} />
         <Route path='customer-purchases' element={<CustomerPurchases />} />
+        <Route path='create-purchase' element={<CreatePurchase />} />
       </Route>
     )
   );

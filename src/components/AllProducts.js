@@ -61,8 +61,8 @@ const AllProducts = () => {
     return (
         <div>
             {products.length <= 0 ? (
-                <div className="flex items-center justify-center gap-2 flex-col mt-[20px]">
-                    <img src={images.emptyShelf} alt="Empty shelf" className="w-[300px]" />
+                <div className="flex items-center justify-center gap-2 flex-col my-[20px]">
+                    <img src={images.emptyStore} alt="Empty shelf" className="sm:w-[300px] w-[250px]" />
                     <p className="text-[24px]">Your store is empty</p>
                     <Link to='/add-product' className="px-[20px] py-2 rounded-[50px] bg-blue-500 text-white">Add product</Link>
                 </div>
