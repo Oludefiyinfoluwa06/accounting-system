@@ -1,45 +1,97 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { PDFDownloadLink, Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
-
-import { images } from '../assets/constants';
+import React, { useRef, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { usePurchaseContext } from '../hooks/UsePurchaseContext';
+import { images } from '../assets/constants';
+import { useReactToPrint } from 'react-to-print';
 
 const AllPurchases = () => {
     const [purchases, setPurchases] = useState([]);
-
     const { getPurchases, deleteAllPurchases } = usePurchaseContext();
+    const componentRef = useRef();
 
     useEffect(() => {
         const fetchPurchases = async () => {
             const purchases = await getPurchases();
             setPurchases(purchases);
-        }
+        };
 
         fetchPurchases();
     }, [getPurchases]);
-    
+
     const handleDeleteAll = async () => {
         await deleteAllPurchases();
         setPurchases([]);
     };
 
-    const MyDocument = () => (
-        <Document>
-            <Page size="A4">
-                <View style={styles.container}>
-                    <Text style={styles.header}>Purchase Receipt</Text>
-                    {purchases.map(purchase => (
-                        <View key={purchase.id} style={styles.purchase}>
-                            <Text>{purchase.name}</Text>
-                            <Text>Quantity: {purchase.quantity}</Text>
-                            <Text>Total Amount: ₦{purchase.price}</Text>
-                        </View>
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+    });
+
+    const totalAmount = purchases.reduce((total, purchase) => total + purchase.price, 0);
+
+    const ReceiptDocument = React.forwardRef((props, ref) => (
+        <div
+            ref={ref}
+            style={{
+                padding: '10px',
+                fontSize: '10px',
+                width: '80mm',
+                height: 'auto',
+                margin: '0 auto',
+                boxShadow: '0 0 5px rgba(0,0,0,0.1)',
+                border: '1px solid #ddd',
+                borderRadius: '5px',
+            }}
+        >
+            <div style={{ textAlign: 'center' }}>
+                <h2 style={{ fontSize: '14px', marginBottom: '10px' }}>LOGO</h2>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <p style={{ fontSize: '10px', marginBottom: '2px' }}>Suite C06 H&A Plaza</p>
+                    <p style={{ fontSize: '10px', marginBottom: '2px' }}>Olusegun Obasanjo Way</p>
+                    <p style={{ fontSize: '10px', marginBottom: '2px' }}>Wuye District FCT, Abuja</p>
+                    <p style={{ fontSize: '10px', marginBottom: '2px' }}>Email: office@utolaundry.xyz</p>
+                    <p style={{ fontSize: '10px', marginBottom: '2px' }}>Website: www.utolaundry.xyz</p>
+                    <p style={{ fontSize: '10px', marginBottom: '5px' }}>Tel: 09073333182</p>
+                </div>
+                <hr style={{ borderBottom: '1px solid black', margin: '5px 0' }} />
+                <h2 style={{ fontSize: '14px', marginBottom: '10px' }}>Purchase Receipt</h2>
+                <div style={{ display: 'table', width: '100%', margin: '10px 0' }}>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}>
+                        <div style={{ width: '33.33%', borderBottom: '1px solid #000', padding: '2px', backgroundColor: '#f0f0f0' }}>
+                            <p style={{ fontSize: '10px', fontWeight: 'bold', textAlign: 'center' }}>Item</p>
+                        </div>
+                        <div style={{ width: '33.33%', borderBottom: '1px solid #000', padding: '2px', backgroundColor: '#f0f0f0' }}>
+                            <p style={{ fontSize: '10px', fontWeight: 'bold', textAlign: 'center' }}>Quantity</p>
+                        </div>
+                        <div style={{ width: '33.33%', borderBottom: '1px solid #000', padding: '2px', backgroundColor: '#f0f0f0' }}>
+                            <p style={{ fontSize: '10px', fontWeight: 'bold', textAlign: 'center' }}>Amount</p>
+                        </div>
+                    </div>
+                    {purchases.map((purchase) => (
+                        <div key={purchase.id} style={{ display: 'flex', flexDirection: 'row' }}>
+                            <div style={{ width: '33.33%', padding: '2px' }}>
+                                <p style={{ fontSize: '10px', textAlign: 'center' }}>{purchase.name}</p>
+                            </div>
+                            <div style={{ width: '33.33%', padding: '2px' }}>
+                                <p style={{ fontSize: '10px', textAlign: 'center' }}>{purchase.quantity}</p>
+                            </div>
+                            <div style={{ width: '33.33%', padding: '2px' }}>
+                                <p style={{ fontSize: '10px', textAlign: 'center' }}>₦{purchase.price}</p>
+                            </div>
+                        </div>
                     ))}
-                </View>
-            </Page>
-        </Document>
-    );
+                    <div style={{ display: 'flex', flexDirection: 'row', marginTop: '10px', borderTop: '1px solid #000', paddingTop: '5px' }}>
+                        <div style={{ width: '66.66%', padding: '2px' }}>
+                            <p style={{ fontSize: '10px', fontWeight: 'bold', textAlign: 'center' }}>Total</p>
+                        </div>
+                        <div style={{ width: '33.33%', padding: '2px' }}>
+                            <p style={{ fontSize: '10px', fontWeight: 'bold', textAlign: 'center' }}>₦{totalAmount}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    ));
 
     return (
         <div>
@@ -57,11 +109,11 @@ const AllPurchases = () => {
                                 <tr>
                                     <th className="w-1/3 py-3 px-4 uppercase font-semibold text-sm">Product Name</th>
                                     <th className="w-1/3 py-3 px-4 uppercase font-semibold text-sm">Quantity</th>
-                                    <th className="w-1/3 py-3 px-4 uppercase font-semibold text-sm">Total Amount</th>
+                                    <th className="w-1/3 py-3 px-4 uppercase font-semibold text-sm">Amount</th>
                                 </tr>
                             </thead>
                             <tbody className="text-gray-700">
-                                {purchases.map(purchase => (
+                                {purchases.map((purchase) => (
                                     <tr key={purchase.id} className="bg-gray-100">
                                         <td className="w-1/3 py-3 px-4">{purchase.name}</td>
                                         <td className="w-1/3 py-3 px-4">{purchase.quantity}</td>
@@ -72,37 +124,29 @@ const AllPurchases = () => {
                         </table>
 
                         <div className="flex items-center justify-start gap-[20px]">
-                            <PDFDownloadLink
-                                document={<MyDocument />}
-                                    fileName="purchase_receipt.pdf"
-                                    className="bg-blue-500 px-[20px] py-[8px] rounded-[50px] text-white"
+                            <button
+                                onClick={handlePrint}
+                                className="bg-blue-500 px-[20px] py-[8px] rounded-[50px] text-white"
                             >
-                                {({ blob, url, loading, error }) =>
-                                    loading ? 'Loading document...' : 'Download Receipt'
-                                }
-                            </PDFDownloadLink>
-                            
-                            <button className="bg-blue-500 px-[20px] py-[8px] rounded-[50px] text-white" onClick={handleDeleteAll}>Delete purchases</button>
+                                Print Receipt
+                            </button>
+
+                            <button
+                                className="bg-blue-500 px-[20px] py-[8px] rounded-[50px] text-white"
+                                onClick={handleDeleteAll}
+                            >
+                                Delete purchases
+                            </button>
                         </div>
+                    </div>
+
+                    <div style={{ display: 'none' }}>
+                        <ReceiptDocument ref={componentRef} />
                     </div>
                 </div>
             )}
         </div>
     );
-}
-
-const styles = StyleSheet.create({
-    container: {
-        padding: 20
-    },
-    header: {
-        fontSize: 24,
-        marginBottom: 20,
-        textAlign: 'center'
-    },
-    purchase: {
-        marginBottom: 10
-    }
-});
+};
 
 export default AllPurchases;
