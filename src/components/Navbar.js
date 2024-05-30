@@ -8,8 +8,8 @@ const Navbar = () => {
 
     return (
         <>
-            <nav className="flex items-center justify-between gap-2 p-[20px] text-white bg-gradient-to-r from-transparentBlack to-transparentBlack">
-                <label>LOGO</label>
+            <nav className="flex items-center justify-between gap-2 p-[20px] text-black">
+                <label>Endess Laundry</label>
                 <ul className="sm:flex items-center justify-end gap-4 hidden">
                     <li>
                         <NavLink to='/'>Home</NavLink>

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getDownloadURL } from 'firebase/storage';
 import Header from "../components/Header";
 import { useProductContext } from '../hooks/UseProductContext';
 
@@ -11,10 +10,9 @@ const AddProduct = () => {
         price: 0
     });
 
-    const [img, setImg] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    const { uploadImg, addProduct } = useProductContext();
+    const { addProduct } = useProductContext();
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -25,24 +23,12 @@ const AddProduct = () => {
     const handleAddProduct = async (e) => {
         e.preventDefault();
 
-        if (!img) {
-            alert("Please select an image.");
-            return;
-        }
-
         setLoading(true);
 
         try {
-            const imgName = img.name.split('.')[0];
-            const imgExt = img.name.split('.')[1];
-
-            const snapshot = await uploadImg(imgName, imgExt, img);
-            const imageUrl = await getDownloadURL(snapshot.ref);
-
-            const newProduct = { ...product, image: imageUrl };
+            const newProduct = { ...product };
             await addProduct(newProduct);
-            setProduct({ name: "", image: "", quantity: 0, price: 0 });
-            setImg(null);
+            setProduct({ name: "", quantity: 0, price: 0 });
             navigate('/');
         } catch (error) {
             console.error("Error adding product:", error);
@@ -67,17 +53,6 @@ const AddProduct = () => {
                         onChange={handleChange}
                         className="w-full px-3 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
                         placeholder="Enter product name"
-                        required
-                    />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="image" className="block text-gray-700 font-bold mb-2">Image</label>
-                    <input
-                        type="file"
-                        id="image"
-                        name="image"
-                        onChange={(e) => setImg(e.target.files[0])}
-                        className="w-full px-3 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
                         required
                     />
                 </div>

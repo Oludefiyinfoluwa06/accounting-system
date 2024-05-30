@@ -44,14 +44,11 @@ const AllPurchases = () => {
             }}
         >
             <div style={{ textAlign: 'center' }}>
-                <h2 style={{ fontSize: '14px', marginBottom: '10px' }}>LOGO</h2>
+                <h2 style={{ fontSize: '14px', marginBottom: '10px' }}>Endess Laundry</h2>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <p style={{ fontSize: '10px', marginBottom: '2px' }}>Suite C06 H&A Plaza</p>
-                    <p style={{ fontSize: '10px', marginBottom: '2px' }}>Olusegun Obasanjo Way</p>
-                    <p style={{ fontSize: '10px', marginBottom: '2px' }}>Wuye District FCT, Abuja</p>
-                    <p style={{ fontSize: '10px', marginBottom: '2px' }}>Email: office@utolaundry.xyz</p>
-                    <p style={{ fontSize: '10px', marginBottom: '2px' }}>Website: www.utolaundry.xyz</p>
-                    <p style={{ fontSize: '10px', marginBottom: '5px' }}>Tel: 09073333182</p>
+                    <p style={{ fontSize: '10px', marginBottom: '2px' }}>Shop 2, Acacia Grove Estate,</p>
+                    <p style={{ fontSize: '10px', marginBottom: '2px' }}>Wuya, Abuja</p>
+                    <p style={{ fontSize: '10px', marginBottom: '5px' }}>Tel: 09158983744, 07061229354</p>
                 </div>
                 <hr style={{ borderBottom: '1px solid black', margin: '5px 0' }} />
                 <h2 style={{ fontSize: '14px', marginBottom: '10px' }}>Purchase Receipt</h2>
@@ -76,7 +73,7 @@ const AllPurchases = () => {
                                 <p style={{ fontSize: '10px', textAlign: 'center' }}>{purchase.quantity}</p>
                             </div>
                             <div style={{ width: '33.33%', padding: '2px' }}>
-                                <p style={{ fontSize: '10px', textAlign: 'center' }}>₦{purchase.price}</p>
+                                <p style={{ fontSize: '10px', textAlign: 'center' }}>₦ {purchase.price}</p>
                             </div>
                         </div>
                     ))}
@@ -98,12 +95,12 @@ const AllPurchases = () => {
             {purchases.length <= 0 ? (
                 <div className="flex items-center justify-center gap-2 flex-col my-[20px]">
                     <img src={images.emptyCart} alt="Empty shelf" className="sm:w-[300px] w-[250px]" />
-                    <p className="text-[24px]">There have been no purchases</p>
+                    <p className="text-[24px]">There has been no purchases</p>
                     <Link to='/create-purchase' className="px-[20px] py-2 rounded-[50px] bg-blue-500 text-white">Create a purchase</Link>
                 </div>
             ) : (
                 <div>
-                    <div className="p-6">
+                    <div className="p-6 overflow-x-auto">
                         <table className="min-w-full bg-white mb-[30px]">
                             <thead className="bg-gray-800 text-white">
                                 <tr>
@@ -117,22 +114,22 @@ const AllPurchases = () => {
                                     <tr key={purchase.id} className="bg-gray-100">
                                         <td className="w-1/3 py-3 px-4">{purchase.name}</td>
                                         <td className="w-1/3 py-3 px-4">{purchase.quantity}</td>
-                                        <td className="w-1/3 py-3 px-4">₦{purchase.price}</td>
+                                        <td className="w-1/3 py-3 px-4">₦ {purchase.price}</td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
 
-                        <div className="flex items-center justify-start gap-[20px]">
+                        <div className="flex items-center justify-start gap-[20px] sm:flex-row flex-col">
                             <button
                                 onClick={handlePrint}
-                                className="bg-blue-500 px-[20px] py-[8px] rounded-[50px] text-white"
+                                className="bg-blue-500 px-[20px] py-[8px] text-white sm:w-[200px] w-full rounded-sm"
                             >
                                 Print Receipt
                             </button>
 
                             <button
-                                className="bg-blue-500 px-[20px] py-[8px] rounded-[50px] text-white"
+                                className="bg-blue-500 px-[20px] py-[8px] text-white sm:w-[200px] w-full rounded-sm"
                                 onClick={handleDeleteAll}
                             >
                                 Delete purchases

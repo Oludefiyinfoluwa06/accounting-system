@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import { useProductContext } from '../hooks/UseProductContext';
-import { getDownloadURL } from "firebase/storage";
 
 const EditProduct = () => {
     const [product, setProduct] = useState({
@@ -11,13 +10,12 @@ const EditProduct = () => {
         price: 0
     });
 
-    const [img, setImg] = useState(null);
     const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
     
     const { id } = useParams();
-    const { uploadImg, getProduct, editProduct } = useProductContext();
+    const { getProduct, editProduct } = useProductContext();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -27,25 +25,13 @@ const EditProduct = () => {
     const handleEditProduct = async (e) => {
         e.preventDefault();
 
-        if (!img) {
-            alert("Please select an image.");
-            return;
-        }
-
         setLoading(true);
 
         try {
-            const imgName = img.name.split('.')[0];
-            const imgExt = img.name.split('.')[1];
-
-            const snapshot = await uploadImg(imgName, imgExt, img);
-            const imageUrl = await getDownloadURL(snapshot.ref);
-
-            const newProduct = { ...product, image: imageUrl };
+            const newProduct = { ...product };
 
             await editProduct(id, newProduct);
-            setProduct({ name: "", image: "", quantity: 0, price: 0 });
-            setImg(null);
+            setProduct({ name: "", quantity: 0, price: 0 });
             navigate('/');
         } catch (error) {
             console.error("Error adding product:", error);
@@ -82,18 +68,6 @@ const EditProduct = () => {
                         onChange={handleChange}
                         className="w-full px-3 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
                         placeholder="Enter product name"
-                        required
-                    />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="image" className="block text-gray-700 font-bold mb-2">Image URL</label>
-                    <input
-                        type="file"
-                        id="image"
-                        name="image"
-                        onChange={(e) => setImg(e.target.files[0])}
-                        className="w-full px-3 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
-                        placeholder="Choose an image"
                         required
                     />
                 </div>
