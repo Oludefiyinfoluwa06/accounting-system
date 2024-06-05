@@ -29,8 +29,10 @@ const AllPurchases = () => {
 
     const totalAmount = purchases.reduce((total, purchase) => total + purchase.price, 0);
 
-    const ReceiptDocument = () => (
+
+    const ReceiptDocument = React.forwardRef((props, ref) => (
         <div
+            ref={ref}
             style={{
                 padding: '10px',
                 fontSize: '10px',
@@ -88,8 +90,7 @@ const AllPurchases = () => {
                 </div>
             </div>
         </div>
-    );
-
+    ));
 
     return (
         <div>
