@@ -6,7 +6,6 @@ import { useProductContext } from '../hooks/UseProductContext';
 const AddProduct = () => {
     const [product, setProduct] = useState({
         name: "",
-        quantity: 0,
         price: 0,
         category: ""
     });
@@ -39,7 +38,7 @@ const AddProduct = () => {
         try {
             const newProduct = { ...product };
             await addProduct(newProduct);
-            setProduct({ name: "", quantity: 0, price: 0, category: "" });
+            setProduct({ name: "", price: 0, category: "" });
             navigate('/');
         } catch (error) {
             console.error("Error adding product:", error);
@@ -68,19 +67,6 @@ const AddProduct = () => {
                         onChange={handleChange}
                         className="w-full px-3 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
                         placeholder="Enter product name"
-                        required
-                    />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="quantity" className="block text-gray-700 font-bold mb-2">Quantity</label>
-                    <input
-                        type="number"
-                        id="quantity"
-                        name="quantity"
-                        value={product.quantity}
-                        onChange={handleChange}
-                        className="w-full px-3 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
-                        placeholder="Enter quantity"
                         required
                     />
                 </div>

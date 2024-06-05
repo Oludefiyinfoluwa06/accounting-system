@@ -75,7 +75,6 @@ const CategoryProducts = () => {
                             <thead className="bg-gray-800 text-white">
                                 <tr>
                                     <th className="w-1/4 py-3 px-4 uppercase font-semibold text-sm">Product Name</th>
-                                    <th className="w-1/4 py-3 px-4 uppercase font-semibold text-sm">Quantity</th>
                                     <th className="w-1/4 py-3 px-4 uppercase font-semibold text-sm">Price</th>
                                     <th className="w-1/4 py-3 px-4 uppercase font-semibold text-sm">Actions</th>
                                 </tr>
@@ -84,7 +83,6 @@ const CategoryProducts = () => {
                                 {products.map((product) => (
                                     <tr key={product.id} className="bg-gray-100">
                                         <td className="w-1/3 py-3 px-4">{product.name}</td>
-                                        <td className="w-1/3 py-3 px-4">{product.quantity}</td>
                                         <td className="w-1/3 py-3 px-4">₦ {product.price}</td>
                                         <td className="py-3 px-4">
                                         <div className="flex items-center justify-center gap-3">
