@@ -29,7 +29,6 @@ const AllPurchases = () => {
 
     const totalAmount = purchases.reduce((total, purchase) => total + purchase.price, 0);
 
-
     const ReceiptDocument = React.forwardRef((props, ref) => (
         <div
             ref={ref}
@@ -84,7 +83,7 @@ const AllPurchases = () => {
                             <p style={{ fontSize: '10px', fontWeight: 'bold', textAlign: 'center', wordWrap: 'break-word' }}>Total</p>
                         </div>
                         <div style={{ width: '33.33%', padding: '2px', wordWrap: 'break-word' }}>
-                            <p style={{ fontSize: '10px', fontWeight: 'bold', textAlign: 'center', wordWrap: 'break-word' }}>₦ {totalAmount}</p>
+                            <p style={{ fontSize: '10px', fontWeight: 'bold', textAlign: 'center', wordWrap: 'break-word' }}>₦ {totalAmount.startsWith('0') ? `${totalAmount.substring(1)}` : `${totalAmount}`}</p>
                         </div>
                     </div>
                 </div>
