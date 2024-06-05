@@ -71,6 +71,11 @@ export const ProductProvider = ({ children }) => {
         setLoading(false);
     };
 
+    const deleteCategory = async (categoryId) => {
+        const categoryRef = ref(db, `categories/${categoryId}`);
+        await remove(categoryRef);
+    };
+
     const values = {
         getProducts,
         getProduct,
@@ -79,6 +84,7 @@ export const ProductProvider = ({ children }) => {
         deleteProduct,
         getCategories,
         addCategory,
+        deleteCategory,
         loading
     };
 

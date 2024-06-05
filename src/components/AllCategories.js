@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { FaTrash } from 'react-icons/fa6';
 import { useProductContext } from '../hooks/UseProductContext';
 import { images } from '../assets/constants';
+import Swal from 'sweetalert2';
 
 const AllCategories = () => {
-    const { getCategories } = useProductContext();
+    const { getCategories, deleteCategory } = useProductContext();
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
@@ -19,13 +21,37 @@ const AllCategories = () => {
         fetchCategories();
     }, [getCategories]);
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
     const handleCategoryClick = (categoryName) => {
         navigate(`/category/${categoryName}`);
     };
+
+    const handleDeleteCategory = async (categoryId) => {
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: 'You are about to delete this category. This action cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        });
+
+        if (result.isConfirmed) {
+            try {
+                await deleteCategory(categoryId);
+                setCategories(categories.filter(category => category.id !== categoryId));
+                Swal.fire('Deleted!', 'The category has been deleted.', 'success');
+            } catch (error) {
+                console.error('Error deleting category:', error);
+                Swal.fire('Error', 'Failed to delete category.', 'error');
+            }
+        }
+    };
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div className="container mx-auto p-4">
@@ -34,10 +60,14 @@ const AllCategories = () => {
                     {categories.map((category) => (
                         <div
                             key={category.id}
-                            className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+                            className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer flex items-center justify-between"
                             onClick={() => handleCategoryClick(category.name)}
                         >
                             <h2 className="text-xl font-bold text-gray-700">{category.name}</h2>
+                            <FaTrash className="cursor-pointer" onClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteCategory(category.id);
+                            }} />
                         </div>
                     ))}
                 </div>
@@ -53,4 +83,3 @@ const AllCategories = () => {
 };
 
 export default AllCategories;
-
