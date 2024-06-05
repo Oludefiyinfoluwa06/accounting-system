@@ -15,6 +15,9 @@ const Navbar = () => {
                         <NavLink to='/'>Home</NavLink>
                     </li>
                     <li>
+                        <NavLink to='/add-category'>Add Category</NavLink>
+                    </li>
+                    <li>
                         <NavLink to='/add-product'>Add Product</NavLink>
                     </li>
                     <li>
@@ -27,9 +30,12 @@ const Navbar = () => {
                 <FaBars className='text-[25px] cursor-pointer block sm:hidden' onClick={() => setShowMobileNav(prev => !prev)} />
             </nav>
 
-            <ul className={`absolute flex flex-col items-start justify-start gap-4 p-[20px] bg-white transform duration-300 shadow-md rounded-md ${showMobileNav ? 'left-[20px]' : 'left-[-100%]'}`}>
+            <ul className={`absolute flex flex-col items-start justify-start gap-4 p-[20px] top-[80px] bg-white transform duration-300 shadow-md rounded-md ${showMobileNav ? 'left-[20px]' : 'left-[-100%]'}`}>
                 <li>
                     <NavLink to='/' onClick={() => setShowMobileNav(false)}>Home</NavLink>
+                </li>
+                <li>
+                    <NavLink to='/add-category' onClick={() => setShowMobileNav(false)}>Add Category</NavLink>
                 </li>
                 <li>
                     <NavLink to='/add-product' onClick={() => setShowMobileNav(false)}>Add Product</NavLink>

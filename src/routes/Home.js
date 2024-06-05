@@ -1,12 +1,12 @@
+import React from 'react';
 import Header from '../components/Header';
-import AllProducts from '../components/AllProducts';
+import AllCategories from '../components/AllCategories';
 
 const Home = () => {
     return (
         <div>
-            <Header title='All Products' subTitle='Access all the products in your store' />
-
-            <AllProducts />
+            <Header title='All Categories' subTitle='Access all the categories in your store' />
+            <AllCategories />
         </div>
     );
 }

@@ -29,9 +29,8 @@ const AllPurchases = () => {
 
     const totalAmount = purchases.reduce((total, purchase) => total + purchase.price, 0);
 
-    const ReceiptDocument = React.forwardRef((props, ref) => (
+    const ReceiptDocument = () => (
         <div
-            ref={ref}
             style={{
                 padding: '10px',
                 fontSize: '10px',
@@ -41,6 +40,7 @@ const AllPurchases = () => {
                 boxShadow: '0 0 5px rgba(0,0,0,0.1)',
                 border: '1px solid #ddd',
                 borderRadius: '5px',
+                wordWrap: 'break-word',
             }}
         >
             <div style={{ textAlign: 'center' }}>
@@ -55,40 +55,41 @@ const AllPurchases = () => {
                 <div style={{ display: 'table', width: '100%', margin: '10px 0' }}>
                     <div style={{ display: 'flex', flexDirection: 'row' }}>
                         <div style={{ width: '33.33%', borderBottom: '1px solid #000', padding: '2px', backgroundColor: '#f0f0f0' }}>
-                            <p style={{ fontSize: '10px', fontWeight: 'bold', textAlign: 'center' }}>Item</p>
+                            <p style={{ fontSize: '10px', fontWeight: 'bold', textAlign: 'center', wordWrap: 'break-word' }}>Item</p>
                         </div>
                         <div style={{ width: '33.33%', borderBottom: '1px solid #000', padding: '2px', backgroundColor: '#f0f0f0' }}>
-                            <p style={{ fontSize: '10px', fontWeight: 'bold', textAlign: 'center' }}>Quantity</p>
+                            <p style={{ fontSize: '10px', fontWeight: 'bold', textAlign: 'center', wordWrap: 'break-word' }}>Quantity</p>
                         </div>
                         <div style={{ width: '33.33%', borderBottom: '1px solid #000', padding: '2px', backgroundColor: '#f0f0f0' }}>
-                            <p style={{ fontSize: '10px', fontWeight: 'bold', textAlign: 'center' }}>Amount</p>
+                            <p style={{ fontSize: '10px', fontWeight: 'bold', textAlign: 'center', wordWrap: 'break-word' }}>Amount</p>
                         </div>
                     </div>
                     {purchases.map((purchase) => (
                         <div key={purchase.id} style={{ display: 'flex', flexDirection: 'row' }}>
-                            <div style={{ width: '33.33%', padding: '2px' }}>
-                                <p style={{ fontSize: '10px', textAlign: 'center' }}>{purchase.name}</p>
+                            <div style={{ width: '33.33%', padding: '2px', wordWrap: 'break-word' }}>
+                                <p style={{ fontSize: '10px', textAlign: 'center', wordWrap: 'break-word' }}>{purchase.name}</p>
                             </div>
-                            <div style={{ width: '33.33%', padding: '2px' }}>
-                                <p style={{ fontSize: '10px', textAlign: 'center' }}>{purchase.quantity}</p>
+                            <div style={{ width: '33.33%', padding: '2px', wordWrap: 'break-word' }}>
+                                <p style={{ fontSize: '10px', textAlign: 'center', wordWrap: 'break-word' }}>{purchase.quantity}</p>
                             </div>
-                            <div style={{ width: '33.33%', padding: '2px' }}>
-                                <p style={{ fontSize: '10px', textAlign: 'center' }}>₦ {purchase.price}</p>
+                            <div style={{ width: '33.33%', padding: '2px', wordWrap: 'break-word' }}>
+                                <p style={{ fontSize: '10px', textAlign: 'center', wordWrap: 'break-word' }}>₦ {purchase.price}</p>
                             </div>
                         </div>
                     ))}
                     <div style={{ display: 'flex', flexDirection: 'row', marginTop: '10px', borderTop: '1px solid #000', paddingTop: '5px' }}>
-                        <div style={{ width: '66.66%', padding: '2px' }}>
-                            <p style={{ fontSize: '10px', fontWeight: 'bold', textAlign: 'center' }}>Total</p>
+                        <div style={{ width: '66.66%', padding: '2px', wordWrap: 'break-word' }}>
+                            <p style={{ fontSize: '10px', fontWeight: 'bold', textAlign: 'center', wordWrap: 'break-word' }}>Total</p>
                         </div>
-                        <div style={{ width: '33.33%', padding: '2px' }}>
-                            <p style={{ fontSize: '10px', fontWeight: 'bold', textAlign: 'center' }}>₦{totalAmount}</p>
+                        <div style={{ width: '33.33%', padding: '2px', wordWrap: 'break-word' }}>
+                            <p style={{ fontSize: '10px', fontWeight: 'bold', textAlign: 'center', wordWrap: 'break-word' }}>₦ {totalAmount}</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    ));
+    );
+
 
     return (
         <div>

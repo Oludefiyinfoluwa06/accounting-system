@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import { useProductContext } from '../hooks/UseProductContext';
@@ -7,13 +7,25 @@ const AddProduct = () => {
     const [product, setProduct] = useState({
         name: "",
         quantity: 0,
-        price: 0
+        price: 0,
+        category: ""
     });
-
     const [loading, setLoading] = useState(false);
+    const [categories, setCategories] = useState([]);
 
-    const { addProduct } = useProductContext();
+    const { addProduct, getCategories } = useProductContext();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            setLoading(true);
+            const categoriesData = await getCategories();
+            setCategories(categoriesData);
+            setLoading(false);
+        };
+
+        fetchCategories();
+    }, [getCategories]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -22,13 +34,12 @@ const AddProduct = () => {
 
     const handleAddProduct = async (e) => {
         e.preventDefault();
-
         setLoading(true);
 
         try {
             const newProduct = { ...product };
             await addProduct(newProduct);
-            setProduct({ name: "", quantity: 0, price: 0 });
+            setProduct({ name: "", quantity: 0, price: 0, category: "" });
             navigate('/');
         } catch (error) {
             console.error("Error adding product:", error);
@@ -36,6 +47,10 @@ const AddProduct = () => {
         } finally {
             setLoading(false);
         }
+    };
+
+    if (loading) {
+        return <div>Loading...</div>;
     }
 
     return (
@@ -81,6 +96,24 @@ const AddProduct = () => {
                         placeholder="Enter price"
                         required
                     />
+                </div>
+                <div className="mb-4">
+                    <label htmlFor="category" className="block text-gray-700 font-bold mb-2">Category</label>
+                    <select
+                        id="category"
+                        name="category"
+                        value={product.category}
+                        onChange={handleChange}
+                        className="w-full px-3 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
+                        required
+                    >
+                        <option value="">Select category</option>
+                        {categories.map((category) => (
+                            <option key={category.id} value={category.name}>
+                                {category.name}
+                            </option>
+                        ))}
+                    </select>
                 </div>
                 <div className="flex justify-start">
                     <button
